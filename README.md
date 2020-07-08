@@ -1,5 +1,5 @@
-# {{ name }}
-> {{ description }}
+# Next App PC Template
+> 一个关于服务端渲染的前端构建模版，本范例使用了next.js+antd+koa来搭建
 
 ### 环境搭建配置
 * 安装设置

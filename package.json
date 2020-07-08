@@ -1,5 +1,5 @@
 {
-  "name": "create-next-app-default",
+  "name": "next-app-pc-tmpl",
   "version": "0.1.0",
   "description": "a next.js app template with ant design and server koa",
   "main": "./node_server/server.js",
