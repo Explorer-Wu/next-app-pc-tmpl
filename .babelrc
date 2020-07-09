@@ -1,0 +1,27 @@
+{
+    "presets": [ "next/babel" ],
+    "plugins": [
+        // "transform-decorators-legacy",
+        "@babel/plugin-syntax-dynamic-import",
+        "@babel/plugin-transform-runtime",
+        "@babel/plugin-proposal-class-properties",
+        "@babel/plugin-proposal-function-bind",
+        [
+            "import",
+            {
+                "libraryName": "antd",
+                // "libraryDirectory": "es", // default: lib
+                "style": true  // "css"
+            }
+        ],
+        // [
+        //     "styled-jsx/babel",
+        //     { "plugins": ["styled-jsx-plugin-sass"] }
+        // ],
+        "inline-react-svg",
+        "react-html-attrs",
+        ["@babel/plugin-proposal-decorators", { "legacy": true }],
+        ["@babel/plugin-proposal-object-rest-spread", { "useBuiltIns": true }]
+    ],
+    "ignore": []
+}

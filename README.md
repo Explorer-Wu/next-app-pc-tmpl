@@ -30,7 +30,7 @@ Next.js 是围绕 page（页面）的概念构建的。page 是从 pages 目录�
 3. 通常实现服务端渲染会使用一些css-in-js库(styled-jsx是 Next.js自带默认使用的css-in-js库)， 它在_document.js中定义
 注意：
     1）Document只在服务器中渲染，事件处理如onClcikwon‘t work
-    2）<Main />之外的React组件不会被浏览器初始化，不要在其中添加应用的逻辑。如果在页面中有共用的组件（如菜单或者工具栏），使用App组件代替。
+    2）<Main/> 之外的React组件不会被浏览器初始化，不要在其中添加应用的逻辑。如果在页面中有共用的组件（如菜单或者工具栏），使用App组件代替。
     3）客户端转换时不会调用Document的getInitialProps方法，页面静态优化时也不会调用。
 
 ### 自定义App(_app.js)
