@@ -1,11 +1,9 @@
-// import Axios from 'axios'
-// import './config'
 import Fetch from './fetch';
 
-class Api {
-  constructor () {
+class ApiAuth {
+  constructor (url) {
     this.defaultConfig = {
-      baseURL: '',
+      baseURL: url,
     }
   }
 
@@ -14,11 +12,13 @@ class Api {
     return Fetch({
         method: 'post',
         url: '/auth/login',
+        // `auth` 表示应该使用 HTTP 基础验证，并提供凭据
+        // 这将设置一个 `Authorization` 头，覆写掉现有的任意使用 `headers` 设置的自定义 `Authorization`头
         data: {
           username: username,
           password: password,
         },
-        // ...this.defaultConfig
+        ...this.defaultConfig
     })
   }
   // 登出
@@ -26,7 +26,7 @@ class Api {
     return Fetch({
       method: 'post',
       url: '/auth/logout',
-      useToken: true,
+      usetoken: true,
       // `headers` 是即将被发送的自定义请求头
       // headers: {'X-Requested-With': 'XMLHttpRequest'},
       // `auth` 表示应该使用 HTTP 基础验证，并提供凭据
@@ -36,64 +36,95 @@ class Api {
       //     password: password,
       // },
       // xsrfHeaderName: 'X-XSRF-TOKEN', // 默认的
-      // ...this.defaultConfig
+      ...this.defaultConfig
     })
   }
+}
 
-  getGlobals() {
+class Api {
+  constructor (url) {
+    this.defaultConfig = {
+      baseURL: url,
+    }
+  }
+
+  getGlobals() { //ctoken=false
     // return Fetch.get(`/api/global`, this.defaultConfig)
     return Fetch({
       method: 'get',
       url: '/api/global',
+      // usetoken: ctoken,
+      ...this.defaultConfig
     })
   }
   getWeathers() {
     return Fetch({
       method: 'get',
       url: '/api/weathers',
+      // usetoken: ctoken,
+      ...this.defaultConfig
     })
   }
   getTeamsMsg() {
     return Fetch({
       method: 'get',
       url: '/api/teams',
+      // usetoken: ctoken,
+      ...this.defaultConfig
     })
   }
   getActivities() {
     return Fetch({
       method: 'get',
       url: '/api/activities',
+      // usetoken: ctoken,
+      ...this.defaultConfig
     })
   }
-  
-  
-  addAlarmRec(reqData) {
-    return Fetch.post(`/api/controller/alarm/`, {...reqData}, this.defaultConfig)
-  }
-  editAlarmRec(id, reqData) {
-    return Fetch.put(`/api/controller/alarm/${id}`, {...reqData}, this.defaultConfig)
-  }
-  delAlarmRec(id) {
-    return Fetch.delete(`/api/controller/alarm/${id}`, this.defaultConfig)
-  }
-  getAlarmFieldList(page, limit) {
-    return Fetch.get(`/api/controller/field`, {
-      ...this.defaultConfig,
+
+  getArticleList(page, limit) {
+    return Fetch({
+      method: 'get',
+      url: '/api/articles',
       params: {
         page: page,
         limit: limit
-      }
+      },
+      ...this.defaultConfig
     })
   }
   
+  addArticle(reqData) {
+    return Fetch({
+      method: 'post',
+      url: '/api/articles',
+      data: {...reqData},
+      ...this.defaultConfig
+    })
+  }
+  editArticle(id, reqData) {
+    return Fetch({
+      method: 'put',
+      url: `/api/articles/${id}`,
+      data: {...reqData},
+      ...this.defaultConfig
+    })
+  }
+  delArticle(id) {
+    return Fetch({
+      method: 'delete',
+      url: `/api/articles/${id}`,
+      data: {...reqData},
+      ...this.defaultConfig
+    })
+  }
 }
 
 class ApiChart {
-  constructor() {
-    // this.user = user
-    this.baseUrl = ''  // `/proxy/test-${user}`
+  constructor(url) {
+    // this.baseUrl = ''  // `/proxy/test-${user}`
     this.defaultConfig = {
-      baseURL: this.baseUrl
+      baseURL: url,
     }
   }
 
@@ -104,7 +135,8 @@ class ApiChart {
         url: '/api/charts/capacity',
         // params: {
         //   period: period
-        // }
+        // },
+        ...this.defaultConfig
       })
     }
 
@@ -115,7 +147,8 @@ class ApiChart {
         period: period,
         start: start,
         end: end
-      }
+      },
+      ...this.defaultConfig
     })
   }
 
@@ -126,7 +159,8 @@ class ApiChart {
         url: '/api/charts/visits',
         // params: {
         //   period: period
-        // }
+        // },
+        ...this.defaultConfig
       })
     }
 
@@ -137,9 +171,10 @@ class ApiChart {
         period: period,
         start: start,
         end: end
-      }
+      },
+      ...this.defaultConfig
     })
   }
 }
 
-export {Api, ApiChart};
+export {Api, ApiAuth, ApiChart};

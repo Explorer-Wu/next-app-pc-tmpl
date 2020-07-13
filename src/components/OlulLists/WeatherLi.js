@@ -6,7 +6,7 @@ import { $Api, $Moment } from '../../api';
 import _ from 'lodash';
 
 function WeatherList({ propWeather }) {
-    console.log("propWeather:", propWeather)
+    // console.log("propWeather:", propWeather)
     return (
         <ul className="ul-box">
             {propWeather.map((el, index) => <li key={index}>

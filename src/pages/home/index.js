@@ -3,42 +3,42 @@ import React, { useState, useEffect, useRef } from "react"
 import HtmlHead from '../../components/HtmlHead'
 import {Row, Col, Card, message} from 'antd'
 import { RocketOutlined, GroupOutlined, GoldOutlined, TrademarkCircleOutlined, StarOutlined } from '@ant-design/icons'
-import { $Api, $ApiChart } from '../../api'
-import ComChartLine from '../../components/Charts/ComChartLine'
-import ComChartRing from '../../components/Charts/ComChartRing'
+import { $Api } from '../../api'
+import { FetchVisitsRule, FetchCapacityRule } from '../../components/Charts/UseFetchsRule'
+import DashTypeChart from '../../components/Charts/DashTypeChart'
 import ComChart from '../../components/Charts/ComChart'
 import WeatherList from '../../components/OlulLists/WeatherLi'
 import TeamsMsgList from '../../components/OlulLists/TeamsMsgs'
 import ActiveApps from '../../components/OlulLists/ActiveApps'
 
-// import "antd/dist/antd.css";
-// import stylesheet from '../../public/styles/main.less';
 export default function Home(props) {
- const IconArr = [ 
+  const IconArr = [ 
   //  <GroupOutlined /> , 
-   <RocketOutlined />,
-   <GoldOutlined /> , 
-   <TrademarkCircleOutlined /> , 
-   <StarOutlined />
- ]
- const corArrs = [
-   ['bg-blue-light', 'bg-blue-dark'],
-   ['bg-purple-light', 'bg-purple-dark'],
-   ['bg-cyan-light', 'bg-cyan-dark'],
-   ['bg-white', 'bg-green-dark']
- ]
+    <RocketOutlined />,
+    <GoldOutlined /> , 
+    <TrademarkCircleOutlined /> , 
+    <StarOutlined />
+  ]
+  const corArrs = [
+    ['bg-blue-light', 'bg-blue-dark'],
+    ['bg-purple-light', 'bg-purple-dark'],
+    ['bg-cyan-light', 'bg-cyan-dark'],
+    ['bg-white', 'bg-green-dark']
+  ]
 
- const VisitorsOptions = {
-   title: "访问量统计",
-   field: "visitors",
-   fetchDataFn: $ApiChart.getVisitsData
- }
+  const VisitorsOptions = {
+    title: "访问量统计",
+    field: "visitors",
+    defaultPeriod: 1*24*60*60
+  }
 
- const CapacityOptions = {
-  title: "源码容量占比",
-  field: "capacity",
-  fetchDataFn: $ApiChart.getCapacityData
-}
+  const CapacityOptions = {
+    title: "源码容量占比",
+    field: "capacity"
+  }
+
+  const { visitsData } = FetchVisitsRule(VisitorsOptions)
+  const { capacityData } = FetchCapacityRule(CapacityOptions)
 
  const exOptsLine = {
    type: 'line',
@@ -46,25 +46,25 @@ export default function Home(props) {
   //  dateFormatter: function (value) {
   //    return $Moment(value).format('YYYY/MM/DD')
   //  },
-   otherChartOpts: {
-     isUpdate: true,
-     isMerge: false,
-     legendEvent: false
-   }
+  otherChartOpts: {
+    isUpdate: true,
+    isMerge: false,
+    legendEvent: false
+  }
  }
 
- const exOptsPie = {
-   type: 'pie',
-   periodOpts: [{
-     name: "1天",
-     value: 1 * 24 * 60 * 60
-   }, {
-     name: "7天",
-     value: 7 * 24 * 60 * 60
-   }, {
-     name: "30天",
-     value: 30 * 24 * 60 * 60
-   }],
+ const exOptsRing = {
+   type: 'semiring',
+  //  periodOpts: [{
+  //    name: "1天",
+  //    value: 1 * 24 * 60 * 60
+  //  }, {
+  //    name: "7天",
+  //    value: 7 * 24 * 60 * 60
+  //  }, {
+  //    name: "30天",
+  //    value: 30 * 24 * 60 * 60
+  //  }],
    otherChartOpts: {
      isUpdate: true,
      isMerge: false,
@@ -72,11 +72,11 @@ export default function Home(props) {
    }
  }
 //  useEffect(() => {
-  
+//    console.log("VisitsData:", visitsData)
 //    return () => {
 //     //  cleanup
 //    }
-//  }, [])
+//  }, [visitsData])
 
  return (
     <>
@@ -96,10 +96,10 @@ export default function Home(props) {
       
       <Row gutter={16}>
         <Col xs={24} sm={12} md={14} lg={16} xl={18}>
-          <ComChartLine render={chartOpt => (<ComChart propChartOpt={chartOpt} />)} curOption={VisitorsOptions} exOption={exOptsLine}/>
+          <DashTypeChart render={chartOpt => (<ComChart propChartOpt={chartOpt} />)} propData={visitsData} exOption={exOptsLine}/>
         </Col>
         <Col xs={24} sm={12} md={10} lg={8} xl={6}>
-          <ComChartRing render={chartOpt => (<ComChart propChartOpt={chartOpt} />)} curOption={CapacityOptions} exOption={exOptsPie}/>
+          <DashTypeChart render={chartOpt => (<ComChart propChartOpt={chartOpt} />)} propData={capacityData} exOption={exOptsRing}/>
         </Col>
       </Row>
 
@@ -112,17 +112,6 @@ export default function Home(props) {
           <ActiveApps propActives={props.activitiesData}/>
         </Col>
       </Row>
-      
-      {/* 
-      <dl className="dl-top">
-        <dt>
-          <figure><Icon type="wechat" /></figure>
-        </dt>
-        <dd>
-          <h5>微信记录</h5>
-          <strong>{this.state.infoData.events_num}</strong>
-        </dd>
-      </dl> */}
 
       <style jsx>{`
       `}</style>
@@ -130,25 +119,15 @@ export default function Home(props) {
   )
 }
 
-// Home.getInitialProps = async () => {
-//   // if (globalRes.status !== 200) {
-//   //   throw new Error(await globalRes.message)
-//   // } else {
-//   //   console.log("globalRes:", globalRes)
-//   //   return { globalData: globalRes.data }
-//   // }
-// }
-
-export async function getStaticProps() {
+export async function getStaticProps(context) {  //getServerSideProps(context)
+  // console.log("context.req:", context.req.headers)
   const globalRes= await $Api.getGlobals() 
-  // const res = await fetch('/api/global')
   // const errorCode = globalRes.statusCode > 200 ? globalRes.statusCode : false
-  // const json = await resglobalRes.json()
   const weatherRes = await $Api.getWeathers()
   const teamsRes = await $Api.getTeamsMsg()
   const activitiesRes = await $Api.getActivities()
 
-  console.log("stars:", globalRes, weatherRes, teamsRes, activitiesRes)
+  // console.log("stars:", globalRes)
 
   return { 
     props: { 

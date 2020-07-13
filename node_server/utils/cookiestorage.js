@@ -1,4 +1,4 @@
-export default {
+module.exports = {
     stampTime: function (str){
         let str_n = Number(str.substring(1, str.length));
         let str_t = str.substring(0, 1);

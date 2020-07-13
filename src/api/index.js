@@ -1,10 +1,11 @@
-import {Api, ApiChart} from './api'
+import {ApiAuth, Api, ApiChart} from './api';
+import BaseURl from './ipconfig';
 import moment from 'moment';
 
 // 全局的api
-const $Api = new Api()
-const $ApiChart = new ApiChart()
-// const $ApiChart = () => new ApiChart()
+const $ApiAuth = new ApiAuth(BaseURl.ipAuth)
+const $Api = new Api(BaseURl.ipCommon)
+const $ApiChart = new ApiChart(BaseURl.ipCommon)
 const $Moment = moment
 
-export { $Api, $ApiChart, $Moment }
+export { $ApiAuth, $Api, $ApiChart, $Moment }

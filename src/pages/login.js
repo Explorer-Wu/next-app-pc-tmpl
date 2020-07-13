@@ -1,4 +1,4 @@
-import Router, { withRouter, useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import Link from 'next/link'
 import React from 'react'
 import produce from 'immer'
@@ -7,13 +7,14 @@ import md5 from 'md5'
 import { Form, Input, Button, Checkbox, Breadcrumb, message } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import Footer from '../components/Footer'
-import { $Api } from '../api'
+import { $ApiAuth } from '../api'
 import CookieStorage from '../utils/cookiestorage'
 import { validPattern } from '../utils/pattern'
 
 import '../../public/styles/components/login.scss'
 
 function Login(props) {
+    const Router = useRouter();
     const [formlogin] = Form.useForm();
     // const [userData, setUserData] = useImmer({
     //     username: '',
@@ -32,19 +33,21 @@ function Login(props) {
             draft.password = values.password   //md5(values.password)
         });
         console.log('Success:', values, userInfo, props);
-        const loginRes = await $Api.login(userInfo.username, userInfo.password) 
+        const {username, password, remember} = userInfo
+        const loginRes = await $ApiAuth.login(username, password) 
+        console.log('Success-login:', loginRes);
         if (loginRes.status !== 200) {
             throw new Error(await loginRes.message)
         } else {
             if (remember) {
-                CookieStorage.setSession('username', username);
+                CookieStorage.setCookie('username', username);
                 // cookies.setCookie('pass_word', pass_word, "d7");
-            } else if (CookieStorage.getSession('username')) {
-                CookieStorage.delSession('username') 
+            } else if (CookieStorage.getCookie('username')) {
+                CookieStorage.delCookie('username') 
             }
             message.success('登录成功，欢迎您！');
             signin(loginRes.data.access_token);
-            form.resetFields();
+            formlogin.resetFields();
         }
         // setUserData(draft => {
         //     draft.error = error.message
@@ -53,9 +56,9 @@ function Login(props) {
 
     //登录成功后跳转到原来要进的页面
     function signin(token) {
-        const { from } = props.router.state || { from: { pathname: '/home' } }
-        console.log('login-token', token, from);
-        CookieStorage.setSession('user_token', token);
+        const { from } = { from: Router.asPath || '/home' }
+        // console.log('login-token', token, from, Router);
+        CookieStorage.setCookie('user_token', token);
         Router.push('/home')
     }
   
@@ -119,7 +122,5 @@ function Login(props) {
         </div>
     );
 }
-
-// const LoginPage = Form.create()(Login);
   
-export default withRouter(Login)
+export default Login;

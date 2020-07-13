@@ -53,6 +53,10 @@ nextConfig = {
   dir: "./src",
   distDir: "./build",
   pageExtensions: ['jsx', 'js', 'json'],
+  //自动静态优化
+  // devIndicators: {
+  //   autoPrerender: true,
+  // },
   // useFileSystemPublicRoutes: false, //禁用文件系统路由
   // cssModules: true,
   // generateEtags: false, //禁止 etag 生成根据你的缓存策略. 如果没有配置，Next 将会生成 etags 到每个页面中
@@ -222,12 +226,11 @@ nextConfig = {
 
     return commonsChunkConfig(config, /\.(less|sass|scss|css)$/)
   },
-  webpackDevMiddleware: config => {
-    // Perform customizations to webpack dev middleware config
-    // console.log(config, '@@')
-    // Important: return the modified config
-    return config;
-  },
+  // webpackDevMiddleware: config => {
+  //   // Perform customizations to webpack dev middleware config
+  //   console.log('DevMiddleware-config:', config)
+  //   return config;
+  // },
   /* 暴露配置到服务端 */
   serverRuntimeConfig: {
     // Will only be available on the server side

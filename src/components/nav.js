@@ -79,10 +79,6 @@ class NavMenu extends Component {
   componentDidMount() {
     const { router } = this.props
     console.log("next-router:", router ,this.props)
-    if(router.asPath === "/") {
-      router.push("/home")
-    }
-
     // router.beforePopState(({ url, as, options }) => {
     //   // I only want to allow these two routes!
     //   if (as === '/') {
@@ -103,9 +99,6 @@ class NavMenu extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { router } = this.props
     if (prevProps.router.pathname !== router.pathname) {
-      if(router.asPath === "/") {
-        router.push("/home")
-      }
       _.flatten(this.menuPath).forEach(mpath => {
           if (router.pathname.indexOf(mpath) > -1) {
               this.setState({ selectedKeys: [mpath]});

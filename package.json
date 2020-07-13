@@ -4,7 +4,6 @@
   "description": "a next.js app template with ant design and server koa",
   "main": "./node_server/server.js",
   "scripts": {
-    "mockserver": "nodemon ./server_mock/server.js",
     "dev:next": "next",
     "start": "node ./node_server/server.js",
     "pm2": "pm2 start pm2.config.js",
@@ -13,7 +12,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@koa/router": "^8.x",
+    "@koa/router": "^8.0.8",
     "@next/bundle-analyzer": "^9.4.4",
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-less": "^1.0.1",
@@ -26,11 +25,9 @@
     "echarts": "^4.8.0",
     "echarts-for-react": "^2.0.16",
     "immer": "^7.0.5",
-    "koa": "^2.x",
-    "koa-next-middleware": "^1.0.3",
-    "koa-onerror": "^4.1.0",
+    "jsonwebtoken": "^8.5.1",
+    "koa": "^2.11.0",
     "lodash": "^4.17.16",
-    "lru-cache": "^5.1.1",
     "md5": "^2.2.1",
     "next": "^9.4.4",
     "react": "^16.13.1",
