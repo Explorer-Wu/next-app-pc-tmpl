@@ -105,6 +105,7 @@ getInitialProps由于执行环境根据情况而变化，因此具有一些不�
 getStaticProps，getStaticPaths是在构建时生效的。
 getServerSideProps,getInitialProps是在请求时候生效的。
 有一些页面用了getServerSideProps,getInitialProps这两个方法，这两个方法是在请求页面的时候才会执行的，所以只要有这两个方法的页面就不会打包成静态页面。
+一个页面中getStaticPaths和getServerSideProps不能一起使用
 
 * next 完成一个请求的流程
 1. handle接受到请求，进行异常判断，异常则404，无异常则将请求相应code置为200

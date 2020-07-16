@@ -103,10 +103,6 @@ appNext.prepare().then(() => {
   router.post('/auth/login', async (ctx, next) => {
     const {username, password} = ctx.request.body;
     console.log("login request body:", username, password);
-    // let username = ctx.request.body.username || ''
-    // let password = ctx.request.body.password || ''
-
-    console.log(`signin with name: ${username}, password: ${password}`);
   
     let status = 200
     if (authVerify.isAuthorized({username, password}) === false) {
@@ -146,16 +142,17 @@ appNext.prepare().then(() => {
   })
 
   router.get('/home', async (ctx, next) => {
-    console.log('home-get:', ctx, next);
+    // console.log('home-get:', ctx, next);
     verifyAuthToken(ctx, next)
     await appNext.render(ctx.req, ctx.res, '/home', ctx.query)
     ctx.respond = false
   })
 
-  // router.get('/test', async (ctx) => {
-  //   await appNext.render(ctx.req, ctx.res, '/test', ctx.query)
-  //   ctx.respond = false
-  // })
+  router.get('/tables', async (ctx, next) => {
+    verifyAuthToken(ctx, next)
+    await appNext.render(ctx.req, ctx.res, '/tables', ctx.query)
+    ctx.respond = false
+  })
 
   router.all('*', async (ctx, next) => {  // /^(?!\/auth|!\/home).*$/
     await handle(ctx.req, ctx.res)

@@ -23,15 +23,12 @@ function LayoutTemp({ children }) {
       <Header propCollapsed={collapsed} onToggleMenu={toggleMenu}/>
       <Content
         style={{
-          height: 'calc(100vh - 40px)',
+          height: 'calc(100vh - 50px)',
           overflow: 'auto',
           padding: 16
         }}
       >
-        <div className="page page-current">
-          {/* { propChild } */}
-          {children}
-        </div>
+        {children}
       </Content>
     </Layout>
   </Layout>)

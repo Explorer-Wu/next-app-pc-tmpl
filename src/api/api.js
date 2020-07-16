@@ -93,6 +93,13 @@ class Api {
       ...this.defaultConfig
     })
   }
+  getArticleCon(id) {
+    return Fetch({
+      method: 'get',
+      url: `/api/articles/:${id}`,
+      ...this.defaultConfig
+    })
+  }
   
   addArticle(reqData) {
     return Fetch({
@@ -113,8 +120,7 @@ class Api {
   delArticle(id) {
     return Fetch({
       method: 'delete',
-      url: `/api/articles/${id}`,
-      data: {...reqData},
+      url: `/api/articledel/${id}`,
       ...this.defaultConfig
     })
   }
