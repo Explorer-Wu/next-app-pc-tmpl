@@ -6,18 +6,18 @@ import { Breadcrumb, Table, Pagination, Modal, Button, message } from "antd";
 // import { RocketOutlined } from "@ant-design/icons";
 import { $Api } from "../../api";
 import { ArticleTablesRule } from "../../components/TablePaginations/UseTablePagingRule";
-import TablePagingHOC from "../../components/TablePaginations/WithTablePageing";
+import WithTablePagingHOC from "../../components/TablePaginations/WithTablePaging";
 import PureTablePaging from "../../components/TablePaginations/PureTablePaging";
 import PureTable from "../../components/TablePaginations/PureTable";
 
 export default function Tables(props) {
   const {initPropsData, initStatesVal, getTableDataFn, delArticleFn} = ArticleTablesRule();
-
-  const ArticleTablePaging = TablePagingHOC(
-    PureTable,
-    getTableDataFn,
-    delArticleFn
-  );
+//   const ArticleTablePaging = TablePagingHOC(
+//     PureTable,
+//     getTableDataFn,
+//     delArticleFn
+//   );
+  const ArticleTablePaging = WithTablePagingHOC(getTableDataFn, delArticleFn)(PureTable)
 
   return (
     <>

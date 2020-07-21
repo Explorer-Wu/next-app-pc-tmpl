@@ -43,31 +43,16 @@ function ArticleTablesRule(props) {
       key: "publish_date",
       minWidth: 160,
     },
-    {
-      title: "操作",
-      key: "action",
-      render: (text, record) =>
-        record.id ? (
-          <span>
-            <Link href={`/tables/articles/${record.id}`}>
-              <a>详情</a>
-            </Link>
-            <Divider type="vertical" />
-            <Popconfirm
-              title="确认删除该新闻?"
-              onConfirm={() => delRowFn(record.id)}
-              okText="Yes"
-              cancelText="No"
-            >
-              <a>删除</a>
-            </Popconfirm>
-          </span>
-        ) : null,
-    },
-  ]; //JSON.stringify(cols),
+  ];
 
   const initPropsData = {
     columns,
+    actions: {
+      selKey: (record) => record.id,
+      delTitle: "确认删除该新闻?",
+      linkurl: '/tables/articles/',
+      linktxt: '详情'
+    },
     rowKeyFn: (record) => record.id,
     isborder: true,
     // isPaging: false,
@@ -88,23 +73,14 @@ function ArticleTablesRule(props) {
       pageCur: 1,
       pageSize: 10,
     },
-    delKey,
   };
 
-  //   const getTableDataFn = async (current, pageSize) => {
-  //     try {
-  //       const resData = await $Api.getArticleList(current, pageSize);
-  //       console.log("table-res:", resData);
-  //         setArticleData((draft) => {
-  //           draft.dataSrc = resData.data.data;
-  //           draft.total = resData.data.total;
-  //         });
-  //     } catch (error) {
-  //       message.error(error.message + ", 获取新闻列表相关数据请求失败！", 5);
-  //     }
-  //   };
-
-  return { initPropsData, initStatesVal, getTableDataFn, delArticleFn };
+  return {
+    initPropsData,
+    initStatesVal,
+    getTableDataFn,
+    delArticleFn,
+  };
 }
 
 export { ArticleTablesRule };
